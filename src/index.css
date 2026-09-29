@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 43 44% 96%; /* #FBF7EE - Cream/Ivory */
+  --foreground: 213 67% 16%; /* #0E2A47 - Navy */
+  --card: 0 0% 100%;
+  --card-foreground: 213 67% 16%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 213 67% 16%;
+  --primary: 213 67% 16%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 41 55% 54%; /* #C9A24B - Gold */
+  --secondary-foreground: 0 0% 100%;
+  --muted: 40 20% 90%;
+  --muted-foreground: 213 20% 40%;
+  --accent: 41 55% 54%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 41 30% 85%;
+  --input: 41 30% 85%;
+  --ring: 41 55% 54%;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+/* ── Custom animations ─────────────────────────────────────────── */
+@layer utilities {
+  /* Gentle float — used on skill cards and floating UI elements */
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  .animate-float-delayed {
+    animation: float 4s ease-in-out infinite;
+    animation-delay: 1.4s;
+  }
+  .animate-float-slow {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 0.7s;
+  }
+
+  /* Pulse glow — used on badge/glow rings */
+  .animate-glow-pulse {
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  /* Shimmer — for the hero card and skill illustrations */
+  .animate-shimmer {
+    animation: shimmer 2.5s ease-in-out infinite;
+  }
+
+  /* Stagger helpers */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-500 { animation-delay: 500ms; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 0.9; transform: scale(1.08); }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+/* ── Scrollbar helpers ─────────────────────────────────────────── */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Portal forms can sit inside nested grid/flex tracks. Allow those tracks and
+   native date/file controls to shrink instead of widening the document. */
+.portal-responsive .grid > * {
+  min-width: 0;
+}
+.portal-responsive input,
+.portal-responsive select,
+.portal-responsive textarea {
+  max-width: 100%;
+}
+.portal-responsive input[type="date"],
+.portal-responsive input[type="file"] {
+  min-width: 0;
+}
+
+/* ── Hero section background animations ───────────────────────── */
+@keyframes hero-orb-drift-1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  25%     { transform: translate(120px,-140px) scale(1.15); }
+  50%     { transform: translate(-90px,80px) scale(0.88); }
+  75%     { transform: translate(60px,120px) scale(1.1); }
+}
+@keyframes hero-orb-drift-2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(-130px,100px) scale(1.18); }
+  66%     { transform: translate(100px,-70px) scale(0.85); }
+}
+@keyframes hero-orb-drift-3 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  40%     { transform: translate(80px,150px) scale(1.12); }
+  70%     { transform: translate(-110px,-90px) scale(0.9); }
+}
+@keyframes hero-particle {
+  0%   { transform: translateY(40px) translateX(0) scale(0.5); opacity: 0; }
+  12%  { opacity: 0.85; }
+  75%  { opacity: 0.7; }
+  100% { transform: translateY(-120px) translateX(var(--ptx, 14px)) scale(0.5); opacity: 0; }
+}
+@keyframes hero-twinkle {
+  0%,100% { opacity: 0.2; transform: scale(0.8); }
+  50%     { opacity: 1;   transform: scale(1.4); }
+}
+@keyframes hero-shimmer {
+  0%   { transform: translateX(-200%) skewX(-22deg); opacity: 0; }
+  5%   { opacity: 1; }
+  22%  { opacity: 0; }
+  100% { transform: translateX(600%) skewX(-22deg); opacity: 0; }
+}
+@keyframes hero-ring {
+  0%   { transform: scale(0.3); opacity: 0.7; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+@keyframes hero-sweep {
+  0%   { opacity: 0.08; }
+  50%  { opacity: 0.22; }
+  100% { opacity: 0.08; }
+}
+
+
+@keyframes splash-logo-pop {
+  0%   { transform: scale(0.7); opacity: 0; }
+  60%  { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.splash-logo-pop { animation: splash-logo-pop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes splash-text-rise {
+  0%   { transform: translateY(12px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.splash-text-rise { animation: splash-text-rise 0.7s ease-out 0.2s both; }
+
+@keyframes splash-bar {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+.splash-bar { animation: splash-bar 1.2s ease-in-out infinite; }
+
+@keyframes newsbar {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@media (max-width: 1023px) {
+  body { padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px)); }
+}
+.mobile-action-bar { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* Keep floating widgets above the mobile action bar on small screens */
+.floating-above-bar { bottom: 1.5rem; }
+@media (max-width: 1023px) {
+  .floating-above-bar { bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px)); }
+}

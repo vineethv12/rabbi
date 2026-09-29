@@ -1,0 +1,55 @@
+Options -MultiViews
+RewriteEngine On
+
+# ── Cache-Control for static assets ─────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp          "access plus 1 year"
+  ExpiresByType image/png           "access plus 1 year"
+  ExpiresByType image/jpeg          "access plus 1 year"
+  ExpiresByType image/gif           "access plus 1 year"
+  ExpiresByType image/svg+xml       "access plus 1 year"
+  ExpiresByType image/x-icon        "access plus 1 year"
+  ExpiresByType font/woff2          "access plus 1 year"
+  ExpiresByType font/woff           "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+  ExpiresByType text/css            "access plus 6 months"
+  ExpiresByType application/javascript "access plus 6 months"
+  ExpiresByType text/javascript     "access plus 6 months"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(webp|png|jpe?g|gif|svg|ico|woff2?|ttf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=15552000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# Suppress PHP error output — errors go to log, not into the JSON response
+php_flag display_errors off
+php_flag display_startup_errors off
+php_value error_reporting 0
+
+# 1. API calls — let PHP handle them directly (must come FIRST)
+RewriteRule ^api/ - [L]
+
+# 2. Real files and directories — serve them as-is (assets, images, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# 3. Everything else (React routes like /admin /gallery /portal) → index.html
+RewriteRule ^ index.html [L]
+
+# Security: block direct access to config.php
+<FilesMatch "(config\.php|\.env|composer\.(json|lock))">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# PHP upload limits
+php_value upload_max_filesize 200M
+php_value post_max_size 210M
+php_value max_execution_time 120
+php_value memory_limit 256M
